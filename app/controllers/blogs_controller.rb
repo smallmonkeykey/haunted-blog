@@ -6,7 +6,8 @@ class BlogsController < ApplicationController
   before_action :set_blog, only: %i[show edit update destroy]
 
   def index
-    @blogs = Blog.search(params[:term]).published.default_order
+    term = params[:term].presence || ''
+    @blogs = Blog.search(term).published.default_order
   end
 
   def show; end
