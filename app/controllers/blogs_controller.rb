@@ -3,8 +3,8 @@
 class BlogsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index show]
 
-  before_action :set_blog, only: %i[show destroy]
-  before_action :correct_user, only: %i[edit update]
+  before_action :set_blog, only: %i[show]
+  before_action :correct_user, only: %i[edit update destroy]
 
   def index
     term = params[:term].presence || ''
@@ -54,6 +54,6 @@ class BlogsController < ApplicationController
   end
 
   def correct_user
-    @blog = current_user.blogs.find_by(id: params[:id])
+    @blog = current_user.blogs.find(params[:id])
   end
 end
