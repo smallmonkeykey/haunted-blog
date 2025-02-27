@@ -46,7 +46,7 @@ class BlogsController < ApplicationController
   private
 
   def set_blog
-    @blog = Blog.find(params[:id])
+    @blog = Blog.where(id: params[:id]).where(secret: false).or(Blog.where(id: params[:id]).where(user_id: current_user&.id)).first!
   end
 
   def blog_params
