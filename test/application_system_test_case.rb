@@ -3,9 +3,9 @@
 require 'test_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, using: :chrome, screen_size: [1400, 1400]
-
-  Capybara.default_max_wait_time = 10
+  driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400] do |options|
+    options.add_argument('--disable-gpu')
+  end
 
   def sign_in_as(user)
     visit root_path
@@ -17,7 +17,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
 
   def sign_out
-    click_link 'Sign Out'
+    click_button 'Sign Out'
     assert_text 'ログアウトしました。'
   end
 end
