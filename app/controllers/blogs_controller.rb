@@ -3,7 +3,6 @@
 class BlogsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index show]
 
-  before_action :set_blog, only: %i[show]
   before_action :correct_user, only: %i[edit update destroy]
 
   def index
@@ -11,7 +10,9 @@ class BlogsController < ApplicationController
     @blogs = Blog.search(term).published.default_order
   end
 
-  def show; end
+  def show
+    @blog = Blog.where(id: params[:id]).where(secret: false).or(Blog.where(id: params[:id]).where(user_id: current_user&.id)).first!
+  end
 
   def new
     @blog = Blog.new
@@ -45,9 +46,9 @@ class BlogsController < ApplicationController
 
   private
 
-  def set_blog
-    @blog = Blog.where(id: params[:id]).where(secret: false).or(Blog.where(id: params[:id]).where(user_id: current_user&.id)).first!
-  end
+  # def set_blog
+  #   @blog = Blog.where(id: params[:id]).where(secret: false).or(Blog.where(id: params[:id]).where(user_id: current_user&.id)).first!
+  # end
 
   def blog_params
     attributes = %i[title content secret]
