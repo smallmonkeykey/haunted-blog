@@ -6,8 +6,7 @@ class BlogsController < ApplicationController
   before_action :correct_user, only: %i[edit update destroy]
 
   def index
-    term = params[:term].presence || ''
-    @blogs = Blog.search(term).published.default_order
+    @blogs = Blog.search(params[:term]).published.default_order
   end
 
   def show
