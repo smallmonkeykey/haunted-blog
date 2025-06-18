@@ -10,7 +10,7 @@ class BlogsController < ApplicationController
   end
 
   def show
-    @blog = Blog.where(id: params[:id]).where(secret: false).or(Blog.where(id: params[:id]).where(user_id: current_user&.id)).first!
+    @blog = Blog.published.or(Blog.where(user_id: current_user)).find_by!(id: params[:id])
   end
 
   def new
@@ -44,10 +44,6 @@ class BlogsController < ApplicationController
   end
 
   private
-
-  # def set_blog
-  #   @blog = Blog.where(id: params[:id]).where(secret: false).or(Blog.where(id: params[:id]).where(user_id: current_user&.id)).first!
-  # end
 
   def blog_params
     attributes = %i[title content secret]
