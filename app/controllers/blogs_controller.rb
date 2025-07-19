@@ -45,13 +45,13 @@ class BlogsController < ApplicationController
 
   private
 
+  def set_owned_blog
+    @blog = current_user.blogs.find(params[:id])
+  end
+
   def blog_params
     attributes = %i[title content secret]
     attributes << :random_eyecatch if current_user.premium?
     params.require(:blog).permit(*attributes)
-  end
-
-  def set_owned_blog
-    @blog = current_user.blogs.find(params[:id])
   end
 end
